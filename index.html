@@ -84,23 +84,19 @@
 </head>
 <body class="dark h-screen flex flex-col overflow-hidden">
 
-    <!-- HEADER -->
     <header id="main-header" class="h-20 shrink-0 bg-white/80 dark:bg-brand-dark/90 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-4 md:px-8 z-50 hidden">
         <div class="flex items-center gap-4">
-            <!-- Dynamic Logo Upload Section -->
             <div class="relative group cursor-pointer w-10 h-10" onclick="document.getElementById('logo-upload').click()">
                 <input type="file" id="logo-upload" hidden accept="image/*" onchange="app.uploadLogo(this)">
                 
                 <div id="default-logo" class="w-full h-full bg-gradient-to-br from-brand-gold to-yellow-600 rounded-xl flex items-center justify-center text-black font-extrabold text-xl shadow-lg transition-transform group-hover:scale-105">M</div>
                 <img id="custom-logo" class="w-full h-full object-cover rounded-xl shadow-lg hidden transition-transform group-hover:scale-105" src="" alt="Logo">
                 
-                <!-- Edit Overlay -->
                 <div class="absolute inset-0 bg-black/60 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <i class="fas fa-camera text-white text-[10px]"></i>
                 </div>
             </div>
 
-            <!-- Clickable Title for Navigation -->
             <div class="cursor-pointer group" onclick="app.returnToLanding()">
                 <h1 class="font-bold text-lg tracking-tight leading-none text-gray-900 dark:text-white group-hover:text-brand-gold transition-colors">MMDS Tabulation</h1>
                 <span id="header-category" class="text-xs text-brand-gold font-bold uppercase tracking-wider group-hover:text-white transition-colors">Select Category</span>
@@ -118,10 +114,8 @@
         </div>
     </header>
 
-    <!-- CONTENT AREA -->
     <main class="flex-grow overflow-y-auto relative bg-gray-50 dark:bg-black p-4 md:p-8">
         
-        <!-- LANDING PAGE -->
         <div id="landing-page" class="absolute inset-0 z-40 bg-gray-50 dark:bg-brand-dark flex flex-col items-center justify-center p-6">
             <div class="text-center max-w-2xl mx-auto mb-16 fade-in" style="animation-delay: 0.1s;">
                 <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-gray-900 dark:text-white">MMDS <span class="text-brand-gold">Tab</span></h1>
@@ -149,7 +143,6 @@
             </div>
         </div>
 
-        <!-- DASHBOARD CONTENT -->
         <div id="dashboard-content" class="hidden max-w-7xl mx-auto space-y-12">
             
             <div class="py-4 bg-gray-50 dark:bg-black transition-colors duration-300">
@@ -164,7 +157,6 @@
                 </nav>
             </div>
 
-            <!-- 1. OVERVIEW -->
             <div id="Overview-tab" class="tab-pane fade-in">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="md:col-span-1 bg-brand-gold text-black rounded-3xl p-10 relative overflow-hidden shadow-glow">
@@ -191,7 +183,6 @@
                 </div>
             </div>
 
-            <!-- 2. TEAMS -->
             <div id="Teams-tab" class="tab-pane hidden fade-in">
                 <div class="card-modern mb-10 flex flex-col md:flex-row gap-8 items-center bg-gradient-to-r from-gray-50 to-white dark:from-brand-card dark:to-brand-card/50 p-8">
                     <div class="flex-grow w-full">
@@ -206,7 +197,6 @@
                 <div id="teams-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
             </div>
 
-            <!-- 3. ADJUDICATORS -->
             <div id="Adjudicators-tab" class="tab-pane hidden fade-in">
                 <div class="card-modern mb-10 flex flex-col md:flex-row gap-8 items-center p-8">
                     <div class="flex-grow w-full">
@@ -221,12 +211,10 @@
                 <ul id="adjs-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></ul>
             </div>
 
-            <!-- 4. MOTIONS -->
             <div id="Motions-tab" class="tab-pane hidden fade-in">
                 <div id="motions-container" class="space-y-8 max-w-6xl mx-auto"></div>
             </div>
 
-            <!-- 5. DRAW -->
             <div id="Draw-tab" class="tab-pane hidden fade-in">
                 <div class="card-modern mb-10 flex flex-col md:flex-row items-center gap-8 justify-between p-8">
                     <div>
@@ -241,7 +229,6 @@
                 <div id="draw-display" class="space-y-6"></div>
             </div>
 
-            <!-- 6. LOGISTICS -->
             <div id="Logistics-tab" class="tab-pane hidden fade-in">
                 <div class="card-modern mb-10 flex flex-col md:flex-row items-center gap-8 justify-between p-8">
                     <div>
@@ -256,7 +243,6 @@
                 <div id="ballots-container" class="space-y-10"></div>
             </div>
 
-            <!-- 7. STANDINGS -->
             <div id="Standings-tab" class="tab-pane hidden fade-in">
                 <div class="card-modern overflow-hidden p-0">
                     <div class="overflow-x-auto">
@@ -278,9 +264,6 @@
         </div>
     </main>
 
-    <!-- === MODALS === -->
-
-    <!-- Password Modal -->
     <div id="password-modal" class="fixed inset-0 hidden z-[70] flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="app.closePasswordModal()"></div>
         <div class="card-modern w-full max-w-md relative z-10 p-8 animate-fade-in text-center">
@@ -294,7 +277,6 @@
         </div>
     </div>
 
-    <!-- Manage Members -->
     <div id="member-modal" class="fixed inset-0 hidden z-[60] flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="app.toggleModal('member-modal')"></div>
         <div class="card-modern w-full max-w-lg relative z-10 p-10 animate-fade-in">
@@ -312,7 +294,6 @@
         </div>
     </div>
 
-    <!-- Settings (Round Management) -->
     <div id="settings-modal" class="fixed inset-0 hidden z-[60] flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="app.toggleModal('settings-modal')"></div>
         <div class="card-modern w-full max-w-xl relative z-10 p-10 animate-fade-in flex flex-col max-h-[85vh]">
@@ -320,8 +301,7 @@
             
             <div class="flex-grow overflow-y-auto pr-2 mb-6">
                 <div id="rounds-config-list" class="space-y-3">
-                    <!-- Rounds injected here -->
-                </div>
+                    </div>
             </div>
             
             <button onclick="app.addRoundConfig()" class="w-full py-3 border-2 border-dashed border-gray-600 rounded-xl text-gray-400 font-bold hover:text-brand-gold hover:border-brand-gold transition mb-4 uppercase tracking-wider text-xs">
@@ -332,21 +312,36 @@
         </div>
     </div>
 
-    <!-- PROJECTION OVERLAY -->
-    <!-- Updated with specialized aesthetics for projection -->
     <div id="projection-overlay" class="fixed inset-0 z-[100] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-800 via-zinc-950 to-black hidden flex-col justify-center items-center text-center p-8 md:p-20">
         <div class="close-projection" onclick="app.closeProjection()"><i class="fas fa-times"></i></div>
         <div id="projection-content" class="fade-in w-full max-w-6xl"></div>
     </div>
 
-    <!-- APP LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, serverTimestamp, updateDoc, runTransaction, getDocs, deleteDoc, writeBatch, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        // ================================================================
+        // === IMPORTANT: PASTE YOUR FIREBASE CONFIGURATION BELOW =========
+        // ================================================================
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBflmb89lUa1qUJYUOmBurdke1oFlGJHPQ",
+            authDomain: "debatetab-8a15e.firebaseapp.com",
+            projectId: "debatetab-8a15e",
+            storageBucket: "debatetab-8a15e.firebasestorage.app",
+            messagingSenderId: "387156129492",
+            appId: "1:387156129492:web:8f0c4eb96e25d7be49ed41",
+            measurementId: "G-41D6V83FP3"
+        };
+
+        const appId = 'mmds-tab-system'; // This is the folder name in the database
+
+        // ================================================================
+        // === END CONFIGURATION ==========================================
+        // ================================================================
+
         const DELETE_PASS = "rubaba06";
 
         let db, auth;
@@ -448,25 +443,59 @@
         // --- APPLICATION CORE LOGIC ---
 
         const app = {
-            init: () => {
-                const appInstance = initializeApp(firebaseConfig);
-                db = getFirestore(appInstance);
-                auth = getAuth(appInstance);
+            init: async () => {
+                try {
+                    const appInstance = initializeApp(firebaseConfig);
+                    db = getFirestore(appInstance);
+                    auth = getAuth(appInstance);
 
-                document.getElementById('theme-toggle').onclick = () => document.body.classList.toggle('dark');
+                    document.getElementById('theme-toggle').onclick = () => document.body.classList.toggle('dark');
 
-                onAuthStateChanged(auth, u => {
-                    if (u) {
-                        app.loadInitialState();
-                    } else {
-                        (typeof __initial_auth_token!=='undefined'&&__initial_auth_token) 
-                            ? signInWithCustomToken(auth, __initial_auth_token) 
-                            : signInAnonymously(auth);
+                    // Set up auth state listener
+                    onAuthStateChanged(auth, u => {
+                        if (u) {
+                            app.loadInitialState();
+                        }
+                    });
+
+                    // Initial authentication handling
+                    let signedIn = false;
+                    
+                    // 1. Try Custom Token (if available in environment)
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        try {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                            signedIn = true;
+                        } catch (e) {
+                            console.warn("Custom token auth failed, trying anonymous fallback...", e);
+                        }
+                    } 
+                    
+                    // 2. Fallback to Anonymous if not signed in
+                    if (!signedIn && !auth.currentUser) {
+                        try {
+                            await signInAnonymously(auth);
+                        } catch (err) {
+                            console.error("Anonymous auth failed:", err);
+                            let msg = "Authentication failed. ";
+                            if (err.code === 'auth/configuration-not-found' || err.code === 'auth/operation-not-allowed') {
+                                msg += "Please go to the Firebase Console > Build > Authentication > Sign-in method, and ENABLE 'Anonymous' sign-in.";
+                            } else if (err.code === 'auth/api-key-not-valid') {
+                                msg += "Your API Key appears to be invalid. Check your firebaseConfig.";
+                            } else {
+                                msg += "Check console for details.";
+                            }
+                            alert(msg);
+                            return; // Stop execution
+                        }
                     }
-                });
 
-                app.setupEventListeners();
-                app.setPage('landing');
+                    app.setupEventListeners();
+                    app.setPage('landing');
+                } catch (e) {
+                    console.error("Firebase Init Failed:", e);
+                    alert("App Initialization Failed: " + e.message);
+                }
             },
 
             setupEventListeners: () => {
@@ -533,13 +562,6 @@
 
             selectCategory: (cat) => {
                 state.category = cat;
-                // Instantaneously set default rounds state for immediate UI rendering
-                const defaultRounds = [
-                    {type: 'standard'}, {type: 'standard'}, {type: 'standard'}, {type: 'standard'},
-                    {type: 'semis'}, {type: 'finals'}
-                ];
-                state.rounds = defaultRounds;
-
                 localStorage.setItem('mmds_category', cat);
                 
                 document.getElementById('header-category').textContent = cat;
@@ -612,6 +634,7 @@
                     const data = s.exists() ? s.data() : { list: defaultRounds };
                     state.rounds = Array.isArray(data.list) ? data.list : defaultRounds;
                     
+                    // AUTO-CREATE if missing
                     if(!s.exists() || !Array.isArray(data.list)) {
                         setDoc(doc(db, getPath('Metadata'), 'Rounds'), { list: state.rounds });
                     }
@@ -838,19 +861,19 @@
                         
                         ${isLocked 
                             ? `<div class="w-full bg-black/40 border border-gray-700 rounded-xl h-64 flex flex-col items-center justify-center text-gray-500 mb-6">
-                                 <i class="fas fa-lock text-4xl mb-4 opacity-50"></i>
-                                 <p class="font-bold uppercase tracking-widest text-sm">Motion & Infoslide Hidden</p>
-                                 <p class="text-xs mt-2 opacity-60">Unlock to view or edit</p>
+                                     <i class="fas fa-lock text-4xl mb-4 opacity-50"></i>
+                                     <p class="font-bold uppercase tracking-widest text-sm">Motion & Infoslide Hidden</p>
+                                     <p class="text-xs mt-2 opacity-60">Unlock to view or edit</p>
                                </div>`
                             : `<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-                                 <div>
-                                     <label class="block text-xs font-bold text-gray-500 uppercase mb-3 tracking-wider">Motion Content</label>
-                                     <textarea id="motion-R${i}" class="input-modern h-64 resize-none text-xl font-bold leading-relaxed p-6" placeholder="Enter motion here...">${m.text}</textarea>
-                                 </div>
-                                 <div>
-                                     <label class="block text-xs font-bold text-gray-500 uppercase mb-3 tracking-wider">Infoslide Content</label>
-                                     <textarea id="infoslide-R${i}" class="input-modern h-64 resize-none text-base font-medium leading-relaxed p-6 bg-gray-50 dark:bg-zinc-900/50 dark:text-gray-100 border-dashed" placeholder="Enter infoslide here...">${m.infoslide || ''}</textarea>
-                                 </div>
+                                     <div>
+                                          <label class="block text-xs font-bold text-gray-500 uppercase mb-3 tracking-wider">Motion Content</label>
+                                          <textarea id="motion-R${i}" class="input-modern h-64 resize-none text-xl font-bold leading-relaxed p-6" placeholder="Enter motion here...">${m.text}</textarea>
+                                     </div>
+                                     <div>
+                                          <label class="block text-xs font-bold text-gray-500 uppercase mb-3 tracking-wider">Infoslide Content</label>
+                                          <textarea id="infoslide-R${i}" class="input-modern h-64 resize-none text-base font-medium leading-relaxed p-6 bg-gray-50 dark:bg-zinc-900/50 dark:text-gray-100 border-dashed" placeholder="Enter infoslide here...">${m.infoslide || ''}</textarea>
+                                     </div>
                                </div>`
                         }
 
@@ -978,7 +1001,8 @@
                 cont.innerHTML = draw.data().pairings.map((p, idx) => {
                     const mid = `${r}_${idx}`;
                     const saved = results[mid];
-                    const t1 = state.teams.find(x => x.id===p.prop), t2 = state.teams.find(x => x.id===p.opp);
+                    const t1 = state.teams.find(x => x.id===p.prop);
+                    const t2 = state.teams.find(x => x.id===p.opp);
                     
                     const renderSide = (s, t, roles) => `
                         <div class="bg-gray-50 dark:bg-black/20 rounded-2xl p-8 border border-gray-100 dark:border-gray-800">
