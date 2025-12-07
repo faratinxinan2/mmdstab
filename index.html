@@ -207,10 +207,11 @@
                     </div>
                     <div class="flex gap-6 w-full md:w-auto">
                         <select id="draw-round-select" class="input-modern w-48 text-base"></select>
-                        <button id="generate-draw-btn" class="btn-primary text-base">Generate</button>
+                        <button id="generate-draw-btn" class="btn-primary text-base">Generate Draw</button>
                     </div>
                 </div>
-                <div id="draw-display" class="space-y-6"></div>
+                <!-- Dynamic Draw Display Area -->
+                <div id="draw-display" class="space-y-4"></div>
             </div>
 
             <div id="Logistics-tab" class="tab-pane hidden fade-in">
@@ -561,6 +562,9 @@
                 document.getElementById('generate-draw-btn').onclick = app.generateDraw;
                 document.getElementById('load-ballots-btn').onclick = app.loadBallots;
                 
+                // Add change listener to draw round select to load existing draw
+                document.getElementById('draw-round-select').onchange = (e) => app.renderDrawDisplay(e.target.value);
+                
                 document.getElementById('password-input').addEventListener('keypress', function (e) {
                     if (e.key === 'Enter') app.submitPassword();
                 });
@@ -717,6 +721,14 @@
                     document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
                     const activePane = document.getElementById(`${tab}-tab`);
                     if(activePane) { activePane.classList.remove('hidden'); activePane.classList.add('fade-in'); }
+                    
+                    // Auto-load draw if switching to draw tab
+                    if(tab === 'Draw') {
+                        const drawSelect = document.getElementById('draw-round-select');
+                        if(drawSelect && drawSelect.value) {
+                            app.renderDrawDisplay(drawSelect.value);
+                        }
+                    }
                 };
 
                 if (tab === 'Logistics' || tab === 'Standings') {
@@ -1128,16 +1140,60 @@
                 }
 
                 const pairings = [];
-                for(let i=0; i<pool.length; i+=2) if(i+1 < pool.length) pairings.push({prop: pool[i].id, opp: pool[i+1].id});
+                for(let i=0; i<pool.length; i+=2) if(i+1 < pool.length) {
+                    pairings.push({
+                        prop: pool[i].id, 
+                        opp: pool[i+1].id,
+                        room: `Room ${pairings.length + 1}` // Default room name
+                    });
+                }
                 
                 await setDoc(doc(db, getPath('Draws'), `R${rNum}`), { pairings });
-                document.getElementById('draw-display').innerHTML = pairings.map((p,i) => {
-                    const t1 = state.teams.find(x => x.id===p.prop), t2 = state.teams.find(x => x.id===p.opp);
-                    return `<div class="card-modern p-8 flex justify-between items-center shadow-none mb-4">
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Room ${i+1}</span>
-                        <div class="text-lg font-bold"><span class="text-indigo-500">${t1.teamName}</span> <span class="text-gray-300 mx-4 text-sm font-normal">VS</span> <span class="text-rose-500">${t2.teamName}</span></div>
+                app.renderDrawDisplay(rNum);
+            },
+            
+            renderDrawDisplay: async (rNum) => {
+                const drawDoc = await getDoc(doc(db, getPath('Draws'), `R${rNum}`));
+                const display = document.getElementById('draw-display');
+                
+                if (!drawDoc.exists()) {
+                    display.innerHTML = '<div class="text-center text-gray-400 italic">No draw generated for this round yet.</div>';
+                    return;
+                }
+                
+                const pairings = drawDoc.data().pairings;
+                display.innerHTML = pairings.map((p,i) => {
+                    const t1 = state.teams.find(x => x.id===p.prop) || {teamName: 'Unknown'};
+                    const t2 = state.teams.find(x => x.id===p.opp) || {teamName: 'Unknown'};
+                    const roomName = p.room || `Room ${i+1}`;
+                    
+                    return `<div class="card-modern p-6 flex flex-col md:flex-row gap-6 justify-between items-center shadow-none mb-4 animate-fade-in">
+                        <div class="flex items-center gap-4 w-full md:w-auto">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">Venue</span>
+                            <input type="text" class="input-modern py-2 px-4 font-bold text-sm w-full md:w-48" value="${roomName}" 
+                                onchange="app.updateDrawRoom(${rNum}, ${i}, this.value)" placeholder="Enter Room Name">
+                        </div>
+                        <div class="text-lg font-bold flex items-center gap-4 w-full md:w-auto justify-center">
+                            <span class="text-indigo-500 text-right flex-1">${t1.teamName}</span> 
+                            <span class="text-gray-300 text-xs font-bold bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">VS</span> 
+                            <span class="text-rose-500 text-left flex-1">${t2.teamName}</span>
+                        </div>
                     </div>`;
                 }).join('');
+            },
+            
+            updateDrawRoom: async (rNum, idx, newVal) => {
+                const path = getPath('Draws');
+                const dRef = doc(db, path, `R${rNum}`);
+                
+                const snap = await getDoc(dRef);
+                if(!snap.exists()) return;
+                
+                const pairings = snap.data().pairings;
+                if(pairings[idx]) {
+                    pairings[idx].room = newVal;
+                    await updateDoc(dRef, { pairings });
+                }
             },
 
             loadBallots: async () => {
@@ -1157,6 +1213,7 @@
                     const saved = results[mid];
                     const t1 = state.teams.find(x => x.id===p.prop);
                     const t2 = state.teams.find(x => x.id===p.opp);
+                    const roomLabel = p.room || `Room ${idx+1}`;
                     
                     const renderSide = (s, t, roles) => `
                         <div class="bg-gray-50 dark:bg-black/20 rounded-2xl p-8 border border-gray-100 dark:border-gray-800">
@@ -1182,7 +1239,7 @@
                     <div class="card-modern overflow-hidden p-0 shadow-none">
                         <div class="px-8 py-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50/50 dark:bg-white/5">
                             <div class="flex items-center gap-6">
-                                <h3 class="font-bold text-gray-400 text-sm uppercase tracking-wide">Room ${idx+1}</h3>
+                                <h3 class="font-bold text-gray-400 text-sm uppercase tracking-wide">${roomLabel}</h3>
                                 ${adjSelect}
                             </div>
                             <div class="flex items-center gap-4">
